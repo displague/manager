@@ -19,50 +19,25 @@ schema:
       <li>Outbound Traffic - Mbit/s - Average outbound traffic over a 2 hour period exceeding this value triggers this alert. (Range 0-10000, default 10)</li>
       <li>Transfer Quota - % - Percentage of network transfer quota used being greater than this value will trigger this alert. (Range 0-400, default 80)</li></ul>
     cpu:
-      description: Average CPU usage over 2 hours exceeding this value triggers this alert.
-      enabled:
-        type: Boolean
-        value: true
-      threshold:
-        type: Integer
-        value: 90
-        description: CPU Usage % (Range 0-2000, default 90).
+      type: Integer
+      value: 90
+      description: CPU Usage % (Range 0-2000, default 90). 0 to disable.
     io:
-      description: Average Disk IO ops/sec over 2 hours exceeding this value triggers this alert.
-      enabled:
-        type: Boolean
-        value: true
-      threshold:
-        type: Integer
-        value: 10000
-        description: Disk IO Rate ops/sec (Range 0-100000, default 10000).
+      type: Integer
+      value: 10000
+      description: Disk IO Rate ops/sec (Range 0-100000, default 10000). 0 to disable.
     transfer_in:
-      description: Average incoming traffic over a 2 hour period exceeding this value triggers this alert.
-      enabled:
-        type: Boolean
-        value: true
-      threshold:
-        type: Integer
-        value: 10
-        description: Incoming Traffic Mbit/s (Range 0-40000, default 10).
+      type: Integer
+      value: 0
+      description: Incoming Traffic Mbit/s (Range 0-40000, default 10). 0 to disable.
     transfer_out:
-      description: Average outbound traffic over a 2 hour period exceeding this value triggers this alert.
-      enabled:
-        type: Boolean
-        value: true
-      threshold:
-        type: Integer
-        value: 10
-        description: Outbound Traffic Mbit/s (Range 0-10000, default 10).
+      type: Integer
+      value: 10
+      description: Outbound Traffic Mbit/s (Range 0-10000, default 10). 0 to disable.
     transfer_quota:
-      description: Percentage of network transfer quota used being greater than this value will trigger this alert.
-      enabled:
-        type: Boolean
-        value: true
-      threshold:
-        type: Integer
-        value: 80
-        description: Transfer Quota % (Range 0-400, default 80).
+      type: Integer
+      value: 80
+      description: Transfer Quota % (Range 0-400, default 80). 0 to disable.
   backups:
     type: Object
     seeAlso: "/reference/endpoints/linode/instances/$id/backups"
@@ -84,10 +59,80 @@ schema:
         value: "W20"
     last_backup:
       description: If enabled, the last backup that was successfully taken.
-      type: backup
+      type: Backup
+      id:
+        type: Integer
+        value: 123456
+      label:
+        type: String
+        value: A label for your snapshot
+        description: Human-friendly backup name.
+        filterable: false
+        limit: 1-255 characters
+      status:
+        type: Enum
+        subtype: Status
+        value: successful
+        description: Status of the backup.
+        filterable: false
+      type:
+        type: Enum
+        subtype: Type
+        value: snapshot
+        description: Whether this is a snapshot or an auto backup.
+      region:
+        type: String
+        filterable: false
+        description: This backup region.
+        value: us-east-1a
+      created:
+        type: String
+        value: "2015-09-29T11:21:01"
+      updated:
+        type: String
+        value: "2015-09-29T11:21:01"
+      finished:
+        type: String
+        value: "2015-09-29T11:21:01"
+        description: An ISO 8601 datetime of when the backup completed.
     snapshot:
       description: If enabled, the last snapshot that was successfully taken.
-      type: backup
+      type: Object
+      id:
+        type: Integer
+        value: 123456
+      label:
+        type: String
+        value: A label for your snapshot
+        description: Human-friendly backup name.
+        filterable: false
+        limit: 1-255 characters
+      status:
+        type: Enum
+        subtype: Status
+        value: successful
+        description: Status of the backup.
+        filterable: false
+      type:
+        type: Enum
+        subtype: Type
+        value: snapshot
+        _description: Whether this is a snapshot or an auto backup.
+      region:
+        type: String
+        filterable: false
+        description: This backup region.
+        value: us-east-1a
+      created:
+        type: String
+        value: "2015-09-29T11:21:01"
+      updated:
+        type: String
+        value: "2015-09-29T11:21:01"
+      finished:
+        type: String
+        value: "2015-09-29T11:21:01"
+        description: An ISO 8601 datetime of when the backup completed.
   created:
     type: String
     value: "2015-09-29T11:21:01"
@@ -99,9 +144,9 @@ schema:
     value: us-east-1a
   distribution:
     description: The distribution that this Linode booted to last.
-    type: Distribution
-    seeAlso: "/reference/endpoints/linode/distributions"
+    type: String
     filterable: true
+    value: linode/debian9
   group:
     editable: true
     type: String
@@ -139,7 +184,7 @@ schema:
     value: running
     filterable: true
     _pylib_volatile: true
-  total_transfer:
+  transfer_total:
     type: Integer
     description: The amount of outbound traffic used this month.
     value: 20000
@@ -153,6 +198,11 @@ schema:
     subtype: Hypervisor
     description: The hypervisor this Linode is running on.
     value: kvm
+  disk:
+    type: Integer
+    value: 24576
+    description: Available disk space, in MB
+    filterable: false
 enums:
   Status:
     offline: The Linode is powered off.

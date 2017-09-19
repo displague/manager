@@ -51,10 +51,10 @@ export default class CreateOrEditConfig extends Component {
       isCustomRoot: AVAILABLE_DISK_SLOTS[linode.hypervisor].indexOf(
         config.root_device.replace('/dev/', '')) === -1,
       isMaxRam: config.ram_limit === 0,
-      enableDistroHelper: config.helpers.enable_distro_helper,
-      enableNetworkHelper: config.helpers.enable_network_helper,
-      enableModulesDepHelper: config.helpers.enable_modules_dep_helper,
-      disableUpdatedb: config.helpers.disable_updatedb,
+      enableDistroHelper: config.helpers.distro,
+      enableNetworkHelper: config.helpers.network,
+      enableModulesDepHelper: config.helpers.modules_dep,
+      disableUpdatedb: config.helpers.updatedb_disabled,
       ...this.state,
     });
 
@@ -78,10 +78,10 @@ export default class CreateOrEditConfig extends Component {
       run_level: this.state.runLevel,
       ram_limit: this.state.isMaxRam ? 0 : parseInt(this.state.ramLimit),
       helpers: {
-        enable_distro_helper: this.state.enableDistroHelper,
-        enable_network_helper: this.state.enableNetworkHelper,
-        enable_modules_dep_helper: this.state.enableModulesDepHelper,
-        disable_updatedb: this.state.disableUpdatedb,
+        distro: this.state.enableDistroHelper,
+        network: this.state.enableNetworkHelper,
+        modules_dep: this.state.enableModulesDepHelper,
+        updatedb_disabled: this.state.disableUpdatedb,
       },
     };
 
@@ -229,7 +229,7 @@ export default class CreateOrEditConfig extends Component {
                 checked={isMaxRam}
                 id="isMaxRam-true"
                 onChange={this.onChange}
-                label={`Maximum (${linode.type.ram} MB)`}
+                label={`Maximum (${linode.type.memory} MB)`}
               />
             </div>
             <div>
@@ -408,10 +408,10 @@ CreateOrEditConfig.defaultProps = {
     devices: {},
     root_device: '',
     helpers: {
-      enable_distro_helper: true,
-      enable_network_helper: true,
-      enable_modules_dep_helper: true,
-      disable_updatedb: true,
+      distro: true,
+      network: true,
+      modules_dep: true,
+      updatedb_disabled: true,
     },
     kernel: 'linode/latest-64bit',
     virt_mode: 'paravirt',

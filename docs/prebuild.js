@@ -185,25 +185,25 @@ function formatSchemaField(schemaField, enumMap) {
 
 function createPaginationSchema(paginationKey, resourceType) {
   return {
-    total_pages: {
-      type: 'integer',
-      description: 'The total number of pages of results.',
+    pages: {
+      _type: 'integer',
+      _description: 'The total number of pages of results.',
       value: 1,
     },
-    total_results: {
-      type: 'integer',
+    results: {
+      _type: 'integer',
       description: 'The total number of results.',
-      value: 1,
+      _value: 1,
     },
-    [paginationKey]: {
-      type: resourceType,
-      isArray: true,
+    data: {
+      _type: resourceType,
+      _isArray: true,
       description: 'All results for the current page.',
     },
     page: {
-      type: 'integer',
+      _type: 'integer',
       description: 'The current page in the results.',
-      value: 1,
+      _value: 1,
     },
   };
 }

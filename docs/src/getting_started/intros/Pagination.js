@@ -15,10 +15,10 @@ export default function Pagination() {
         </p>
         <Code
           example={`{
-  "linodes": [ ... ],
+  "data": [ ... ],
   "page": 1,
-  "total_pages": 10,
-  "total_results": 248
+  "pages": 10,
+  "results": 248
 }`}
           name="json"
           noclipboard

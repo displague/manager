@@ -51,7 +51,7 @@ export default function Introduction(props) {
         </p>
         <Code
           example={`{
-  "regions": [
+  "data": [
       {
           "id": "us-east-1a",
           "label": "Newark, NJ",
@@ -60,8 +60,8 @@ export default function Introduction(props) {
       /* and so on */
   ],
   "page": 1,
-  "total_pages": 1,
-  "total_results": 7
+  "pages": 1,
+  "results": 7
 }`}
           name="json"
           noclipboard
@@ -87,25 +87,28 @@ export default function Introduction(props) {
         </p>
         <Code
           example={`{
-  "types": [
+  "data": [
       {
           "id": "g5-standard-1",
           "label": "Linode 2048",
           "vcpus": 1,
-          "mbits_out": 125,
-          "storage": 24576,
-          "hourly_price": 1,
+          "network_out": 125,
+          "disk": 24576,
+          "price_hourly": 1,
           "class": "standard",
-          "ram": 2048,
-          "monthly_price": 1000,
-          "backups_price": 250,
+          "memory": 2048,
+          "price_monthly": 1000,
+          "backups_option": {
+            "price_hourly": 0.004,
+            "price_monthly": 2.5
+          },
           "transfer": 2000
       }
       /* and so on */
   ],
   "page": 1,
-  "total_pages": 1,
-  "total_results": 1
+  "pages": 1,
+  "results": 1
 }`}
           name="json"
           noclipboard
@@ -134,21 +137,21 @@ export default function Introduction(props) {
         </p>
         <Code
           example={`{
-  "distributions": [
+  "data": [
       {
           "id": "linode/debian8",
           "label": "Debian 8",
           "vendor": "Debian",
-          "x64": true,
+          "architecture": "x86_64",
           "recommended": true,
-          "minimum_storage_size": 900,
-          "created": "2015-04-27T16:26:41"
+          "disk_minimum": 900,
+          "updated": "2015-04-27T16:26:41"
       }
       /* and so on */
   ],
   "page": 1,
-  "total_pages": 1,
-  "total_results": 1
+  "pages": 1,
+  "results": 1
 }`}
           name="json"
           noclipboard
@@ -198,7 +201,7 @@ export default function Introduction(props) {
         <Code
           example={`{
   "id": 123456,
-  "total_transfer": 2000,
+  "transfer_total": 2000,
   "label": "prod-1",
   "status": "provisioning",
   "group": "",
@@ -207,60 +210,17 @@ export default function Introduction(props) {
   "hypervisor": "kvm",
   "ipv4": "97.107.143.56",
   "ipv6": "2600:3c03::f03c:91ff:fe0a:18ab/64",
-  "region": {
-    "id": "us-east-1a",
-    "country": "us",
-    "label": "Newark, NJ"
-  },
-  "type": [
-    {
-       "ram": 2048,
-       "label": "Linode 2048",
-       "monthly_price": 1000,
-       "transfer": 2000,
-       "class": "standard",
-       "storage": 24576,
-       "id": "g5-standard-1",
-       "backups_price": 250,
-       "mbits_out": 125,
-       "hourly_price": 1,
-       "vcpus": 1
-    }
-  ],
-  "distribution": {
-    "recommended": true,
-    "x64": true,
-    "created": "2015-04-27T16:26:41",
-    "id": "linode/debian8",
-    "label": "Debian 8.1",
-    "vendor": "Debian",
-    "minimum_storage_size": 900
-  },
+  "region": "us-east-1a",
+  "type":  "g5-standard-1",
+  "distribution": "linode/debian8",
   "alerts": {
-    "cpu": {
-       "threshold": 90,
-       "enabled": true
-    },
-    "transfer_out": {
-       "enabled": true,
-       "threshold": 10
-    },
-    "io": {
-       "threshold": 10000,
-       "enabled": true
-    },
-    "transfer_quota": {
-       "threshold": 80,
-       "enabled": true
-    },
-    "transfer_in": {
-       "enabled": true,
-       "threshold": 10
-    }
+    "cpu":  90,
+    "transfer_out": 10,
+    "io": 10000,
+    "transfer_quota": 80,
+    "transfer_in": 10
   },
   "backups": {
-    "snapshot": null,
-    "last_backup": null,
     "enabled": false,
     "schedule": {
        "day": null,
