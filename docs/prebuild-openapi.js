@@ -1,17 +1,15 @@
-#!/usr/bin/env node
-const fs = require('fs');
-const path = require('path');
+#!/usr/bin/env babel-cli
+import fs from 'fs';
+import path from 'path';
 
-const yaml = require('js-yaml');
-const _ = require('lodash');
+import yaml from 'js-yaml';
+import _ from 'lodash';
+import { openapi } from '~/openapi';
 
 const BASE_PATH = './src/data';
 const ROUTE_BASE_PATH = `/${process.env.API_VERSION || 'v4'}/reference`;
 const API_ROOT = process.env.API_ROOT || 'https://api.linode.com';
 const API_VERSION = process.env.API_VERSION || 'v4';
-
-const pythonPath = path.join(BASE_PATH, 'python');
-const pythonFiles = fs.readdirSync(pythonPath);
 
 const objectsPath = path.join(BASE_PATH, 'objects');
 const apiObjectMap = {};
@@ -306,16 +304,16 @@ function formatMethodThing(methodObj, key) {
 function formatMethod(endpoint, method) {
   const methodObj = endpoint.methods[method];
 
-  const params = formatMethodThing(methodObj, 'params');
-  const response = formatMethodThing(methodObj, 'response');
+  const parameters = formatMethodThing(methodObj, 'params');
+  const responses = formatMethodThing(methodObj, 'response');
 
   const examples = formatMethodExamples(methodObj, params.example);
 
   return _.merge({}, methodObj, {
     name: method,
     examples,
-    params: params,
-    response: response,
+    parameters: parameters,
+    responses: responses,
   });
 }
 
@@ -388,7 +386,7 @@ allEndpoints.forEach(function (endpointContainer) {
         try {
           return formatMethod(endpoint, method);
         } catch (e) {
-          const msg = `Error rendering api.js for ${method} of ${path} in
+          const msg = `Error rendering prebuild-openapi.js for ${method} of ${path} in
  ${endpointContainer.name}:\n${e.message}\n\n`;
           throw new Error(msg);
         }
@@ -411,7 +409,7 @@ allEndpoints.forEach(function (endpointContainer) {
 
     if (!endpointMap[containerName]) {
       throw new Error(`'${containerName}' undefined in the endpoint map.
- Check the file name against the endpointMap in prebuild.`);
+ Check the file name against the endpointMap in prebuild-openapi.`);
     }
 
     if (!endpointMap[containerName].groups[endpoint.group]) {
@@ -437,152 +435,9 @@ allEndpoints = Object.keys(endpointMap).map(function (key) {
       })),
   });
 }).filter(Boolean);
+openapi.blah = allEndpoints;
+const data = JSON.stringify(openapi, null, 2);
 
-const data = JSON.stringify(allEndpoints, null, 2);
-const endpointModule = `
-  /**
-  *   Generated Docs Source -- DO NOT EDIT
-  *   - see prebuild.js
-  */
-  module.exports = { indices: ${data} };
-`;
-fs.writeFileSync(path.join('./src', 'api.js'), endpointModule);
+const endpointModule = data;
 
-/**
- *   Convert Python YAML docs to JSON js objects
- */
-
-function convertPythonYaml() {
-  const pythonObjects = pythonFiles.filter(function (fileName) {
-    return path.extname(fileName) === '.yaml';
-  }).map(function (fileName) {
-    const filePath = path.join(pythonPath, fileName);
-    const pythonObject = yaml.safeLoad(fs.readFileSync(filePath, 'utf-8'), { json: true });
-
-    return pythonObject;
-  });
-
-  const pythonObjectMap = {
-    LinodeLoginClient: {
-      name: 'LinodeLoginClient',
-      path: '/linode-login-client',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/linode-login-client',
-      formattedPythonObject: [],
-    },
-    LinodeClient: {
-      name: 'LinodeClient',
-      path: '/linode-client',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/linode-client',
-      formattedPythonObject: [],
-    },
-    Linode: {
-      name: 'Linode',
-      path: '/linode',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/linode',
-      formattedPythonObject: [],
-    },
-    Config: {
-      name: 'Config',
-      path: '/config',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/config',
-      formattedPythonObject: [],
-    },
-    Disk: {
-      name: 'Disk',
-      path: '/disk',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/disk',
-      formattedPythonObject: [],
-    },
-    Region: {
-      name: 'Region',
-      path: '/region',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/region',
-      formattedPythonObject: [],
-    },
-    Distribution: {
-      name: 'Distribution',
-      path: '/distribution',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/distribution',
-      formattedPythonObject: [],
-    },
-    Backup: {
-      name: 'Backup',
-      path: '/backup',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/backup',
-      formattedPythonObject: [],
-    },
-    IPAddress: {
-      name: 'IPAddress',
-      path: '/ipaddress',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/ipaddress',
-      formattedPythonObject: [],
-    },
-    IPv6Address: {
-      name: 'IPv6Address',
-      path: '/ipv6address',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/ipv6address',
-      formattedPythonObject: [],
-    },
-    Kernel: {
-      name: 'Kernel',
-      path: '/kernel',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/kernel',
-      formattedPythonObject: [],
-    },
-    Service: {
-      name: 'Service',
-      path: '/service',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/service',
-      formattedPythonObject: [],
-    },
-    StackScript: {
-      name: 'StackScript',
-      path: '/stackscript',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/stackscript',
-      formattedPythonObject: [],
-    },
-    Domain: {
-      name: 'Domain',
-      path: '/domain',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/domain',
-      formattedPythonObject: [],
-    },
-    'Domain Record': {
-      name: 'Domain Record',
-      path: '/domain-record',
-      langauge: 'python',
-      routePath: '/v4/libraries/python/domain-record',
-      formattedPythonObject: [],
-    },
-  };
-
-  pythonObjects.forEach(function (pythonObject) {
-    if (pythonObjectMap[pythonObject.name]) {
-      pythonObjectMap[pythonObject.name].formattedPythonObject = pythonObject;
-    }
-  });
-  const data = JSON.stringify(pythonObjectMap, null, 2);
-  const pythonModule = `
-  /**
-   *   Generated Python Client Docs Source -- DO NOT EDIT
-   *   - see prebuild.js
-   */
-  module.exports = { pythonObjects: ${data} };
-  `;
-  fs.writeFileSync(path.join('./src', 'python.js'), pythonModule);
-}
-convertPythonYaml();
+fs.writeFileSync(path.join('./src', 'linode.openapi3.json'), endpointModule);
