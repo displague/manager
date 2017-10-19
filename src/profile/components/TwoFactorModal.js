@@ -32,6 +32,8 @@ export class TwoFactorModal extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch } = this.props;
     const { tfaCode } = this.state;
@@ -41,8 +43,6 @@ export class TwoFactorModal extends Component {
       ({ scratch }) => this.twoFactorScratchModal(scratch),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   twoFactorScratchModal(scratch) {
     const title = 'Two-Factor Authentication Enabled';

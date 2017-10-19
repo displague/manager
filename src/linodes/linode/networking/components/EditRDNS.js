@@ -31,6 +31,8 @@ export default class EditRDNS extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, ip, close } = this.props;
     const { hostname } = this.state;
@@ -40,8 +42,6 @@ export default class EditRDNS extends Component {
       close,
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { close, ip: { address } } = this.props;

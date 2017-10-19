@@ -31,6 +31,8 @@ export default class EditCNAMERecord extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, id, close } = this.props;
     const { ttl, hostname, alias } = this.state;
@@ -47,8 +49,6 @@ export default class EditCNAMERecord extends Component {
       close,
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { close, title, id } = this.props;

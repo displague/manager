@@ -42,6 +42,8 @@ export default class EditSRVRecord extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value });
+
   onSubmit = () => {
     const { dispatch, id, close } = this.props;
     const { ttl, service, protocol, target, priority, weight, port } = this.state;
@@ -62,8 +64,6 @@ export default class EditSRVRecord extends Component {
       close,
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value });
 
   render() {
     const { close, title, id } = this.props;

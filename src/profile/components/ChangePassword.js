@@ -29,6 +29,8 @@ export default class ChangePassword extends Component {
     };
   }
 
+  onChange = ({ target: { value, name } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch } = this.props;
     const { password, expires } = this.state;
@@ -38,8 +40,6 @@ export default class ChangePassword extends Component {
       () => this.setState({ password: '', expires: '' }),
     ]));
   }
-
-  onChange = ({ target: { value, name } }) => this.setState({ [name]: value })
 
   render() {
     const { password, expires, errors, loading } = this.state;

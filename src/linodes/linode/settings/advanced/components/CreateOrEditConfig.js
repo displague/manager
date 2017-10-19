@@ -65,6 +65,9 @@ export default class CreateOrEditConfig extends Component {
     }
   }
 
+  onChange = ({ target: { name, value, type, checked } }) =>
+    this.setState({ [name]: type === 'checkbox' ? checked : value })
+
   onSubmit = () => {
     const { dispatch, linode, config } = this.props;
 
@@ -93,9 +96,6 @@ export default class CreateOrEditConfig extends Component {
       () => push(`/linodes/${linode.label}/settings/advanced`),
     ]));
   }
-
-  onChange = ({ target: { name, value, type, checked } }) =>
-    this.setState({ [name]: type === 'checkbox' ? checked : value })
 
   kernelOptions() {
     const { kernels } = this.props;

@@ -28,6 +28,8 @@ export default class EditMXRecord extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, id, close } = this.props;
     const { mailserver, subdomain, preference } = this.state;
@@ -45,8 +47,6 @@ export default class EditMXRecord extends Component {
       close,
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { close, title, id } = this.props;

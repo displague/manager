@@ -37,6 +37,8 @@ export default class AddDisk extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, linode } = this.props;
     const { label, size, distribution, password, filesystem } = this.state;
@@ -53,8 +55,6 @@ export default class AddDisk extends Component {
       hideModal,
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { dispatch, free, distributions: { distributions } } = this.props;

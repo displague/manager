@@ -45,6 +45,9 @@ export default class ConfigForm extends Component {
     };
   }
 
+  onChange = ({ target: { checked, value, name, type } }) =>
+    this.setState({ [name]: type === 'checkbox' ? checked : value })
+
   onSubmit = () => {
     const { dispatch, nodebalancer, config } = this.props;
     const {
@@ -91,9 +94,6 @@ export default class ConfigForm extends Component {
 
     return dispatch(dispatchOrStoreErrors.call(this, calls));
   }
-
-  onChange = ({ target: { checked, value, name, type } }) =>
-    this.setState({ [name]: type === 'checkbox' ? checked : value })
 
   render() {
     const { submitText, submitDisabledText, config } = this.props;

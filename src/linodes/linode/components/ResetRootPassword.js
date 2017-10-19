@@ -40,6 +40,8 @@ export default class ResetRootPassword extends Component {
     });
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { password, disk } = this.state;
     const { dispatch, linode } = this.props;
@@ -49,8 +51,6 @@ export default class ResetRootPassword extends Component {
       () => this.setState({ password: '' }),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   onSubmitConfirm = () => {
     const { dispatch } = this.props;

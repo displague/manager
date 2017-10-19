@@ -26,6 +26,8 @@ export default class ChangeEmail extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch } = this.props;
     const { email } = this.state;
@@ -34,8 +36,6 @@ export default class ChangeEmail extends Component {
       () => profile.put({ email }),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { loading, errors, email } = this.state;

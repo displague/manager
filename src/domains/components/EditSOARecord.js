@@ -59,6 +59,8 @@ export default class EditSOARecord extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, close } = this.props;
     const { group, domain, defaultTTL, refreshRate, retryRate, expireTime, email,
@@ -95,8 +97,6 @@ export default class EditSOARecord extends Component {
       () => close(domain)(),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { close, domains: { type } } = this.props;

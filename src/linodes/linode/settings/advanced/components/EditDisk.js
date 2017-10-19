@@ -34,6 +34,8 @@ export default class EditDisk extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { size, label } = this.state;
     const { linode, disk, dispatch } = this.props;
@@ -49,8 +51,6 @@ export default class EditDisk extends Component {
 
     return dispatch(dispatchOrStoreErrors.call(this, requests));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { disk, free, dispatch } = this.props;

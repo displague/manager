@@ -26,6 +26,8 @@ export default class ScheduleForm extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch, linode } = this.props;
     const { day, window } = this.state;
@@ -34,8 +36,6 @@ export default class ScheduleForm extends Component {
       () => linodes.put({ backups: { schedule: { day, window } } }, linode.id),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { errors, loading, window, day } = this.state;

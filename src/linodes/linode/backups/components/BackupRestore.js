@@ -31,6 +31,9 @@ export default class BackupRestore extends Component {
     };
   }
 
+  onChange = ({ target: { name, value, checked } }) =>
+    this.setState({ [name]: name === 'overwrite' ? checked : value })
+
   onSubmit = () => {
     const { dispatch, linode, backup, linodes } = this.props;
     const { target, overwrite } = this.state;
@@ -60,9 +63,6 @@ export default class BackupRestore extends Component {
       </ConfirmModalBody>
     )));
   }
-
-  onChange = ({ target: { name, value, checked } }) =>
-    this.setState({ [name]: name === 'overwrite' ? checked : value })
 
   render() {
     const { backup, linode, linodes } = this.props;

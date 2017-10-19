@@ -29,6 +29,8 @@ export default class ChangeTimezone extends Component {
     };
   }
 
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
   onSubmit = () => {
     const { dispatch } = this.props;
     const { timezone } = this.state;
@@ -38,8 +40,6 @@ export default class ChangeTimezone extends Component {
       () => setStorage('profile/timezone', timezone),
     ]));
   }
-
-  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
 
   render() {
     const { loading, errors, timezone } = this.state;
