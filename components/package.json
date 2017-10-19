@@ -13,6 +13,7 @@
     "react": "^15.1.0"
   },
   "dependencies": {
+    "prop-types": "^15.6.0",
     "react-clipboard.js": "^1.1.2",
     "react-dom": "^15.1.0",
     "react-highlight": "^0.10.0",
